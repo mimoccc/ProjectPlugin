@@ -3,7 +3,7 @@
   "padding": 16,
   "children": [
     {
-      "type": "Text",
+      "type": "Label",
       "text": "Welcome"
     },
     {

@@ -6,6 +6,7 @@ import org.mjdev.plugins.projectplugin.renderer.components.Columh
 import org.mjdev.plugins.projectplugin.renderer.components.Text
 import org.mjdev.plugins.projectplugin.renderer.components.TextField
 import org.mjdev.plugins.projectplugin.renderer.components.Button
+import org.mjdev.plugins.projectplugin.renderer.components.Label
 import org.mjdev.plugins.projectplugin.renderer.components.NoComponent
 
 @Composable
@@ -18,5 +19,6 @@ fun ComposeNode(
     "Text" -> Text(node, state, onAction)
     "TextField" -> TextField(node, state, onAction)
     "Button" -> Button(node, state, onAction)
+    "Label" -> Label(node, state, onAction)
     else -> NoComponent(node, state, onAction)
 }
