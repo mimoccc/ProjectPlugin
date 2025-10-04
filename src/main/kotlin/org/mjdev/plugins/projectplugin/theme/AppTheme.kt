@@ -1,13 +1,10 @@
-package org.mjdev.plugins.projectplugin.toolWindow
+package org.mjdev.plugins.projectplugin.theme
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.intellij.ide.ui.LafManager
-import com.intellij.openapi.application.ApplicationManager
-import java.awt.Color as AwtColor
 import javax.swing.UIManager
 
 private val DraculaPrimary = Color(0xFFBD93F9)
@@ -28,40 +25,26 @@ private val LightOnPrimary = Color(0xFFFFFFFF)
 private val LightOnBackground = Color(0xFF212121)
 private val LightOnSurface = Color(0xFF212121)
 
-private fun isDarkTheme(): Boolean {
-    return try {
-        val app = ApplicationManager.getApplication()
-        val lafDark = if (app != null) {
-            runCatching {
-                LafManager.getInstance().currentUIThemeLookAndFeel?.isDark
-            }.getOrNull()
-        } else null
-
-        when {
-            lafDark != null -> lafDark
-            else -> {
-                val lafName = runCatching {
-                    UIManager.getLookAndFeel()?.name?.lowercase().orEmpty()
-                }.getOrDefault("")
-                lafName.contains("darcula") ||
-                        lafName.contains("dracula") || lafName.contains("dark")
-            }
-        }
-    } catch (_: Throwable) {
-        false
+private fun isDarkTheme(): Boolean = runCatching {
+    val isDark = UIManager.getLookAndFeel()?.defaults?.get("ui.theme.is.dark") as? Boolean
+    isDark ?: run {
+        UIManager.getLookAndFeel()?.name?.lowercase().orEmpty().let { theme ->
+            theme.contains("darcula") || theme.contains("dark")
+        } ?: false
     }
-}
+}.getOrNull() ?: false
 
-fun uiColor(key: String, fallback: Color): Color {
-    return try {
-        (UIManager.getColor(key) as? AwtColor)?.let { Color(it.rgb) } ?: fallback
-    } catch (_: Exception) {
-        fallback
-    }
-}
+fun uiColor(
+    key: String,
+    fallback: Color
+): Color = runCatching {
+    UIManager.getColor(key)?.let { Color(it.rgb) } ?: fallback
+}.getOrNull() ?: fallback
 
 @Composable
-fun AppTheme(content: @Composable () -> Unit) {
+fun AppTheme(
+    content: @Composable () -> Unit
+) {
     val dark = isDarkTheme()
     val colors = if (dark) {
         darkColors(

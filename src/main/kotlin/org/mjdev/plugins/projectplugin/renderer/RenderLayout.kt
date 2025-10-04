@@ -1,0 +1,22 @@
+package org.mjdev.plugins.projectplugin.renderer
+
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import org.json.JSONObject
+
+@Composable
+fun RenderLayout(
+    json: JSONObject,
+    onAction: (id: String, action: String, state: Map<String, Any?>) -> Unit
+) {
+    val state = remember { mutableStateMapOf<String, Any?>() }
+    Surface(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        ComposeNode(json, state, onAction)
+    }
+}

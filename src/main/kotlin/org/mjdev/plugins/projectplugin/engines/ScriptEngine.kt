@@ -1,9 +1,6 @@
 package org.mjdev.plugins.projectplugin.engines
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import com.intellij.codeInsight.codeVision.CodeVisionState.NotReady.result
-import com.intellij.util.asSafely
+import kotlin.reflect.full.callSuspend
 import kotlin.reflect.full.functions
 import kotlin.script.experimental.api.EvaluationResult
 import kotlin.script.experimental.api.ResultValue
@@ -14,7 +11,6 @@ class ScriptEngineHolder(
     private val script: String?,
     private val engineDelegate: IScriptEngine = KotlinScriptEngine()
 ) {
-
     suspend fun eval(
         script: String?
     ): ResultWithDiagnostics<EvaluationResult>? = engineDelegate.eval(script ?: "")
@@ -29,22 +25,12 @@ class ScriptEngineHolder(
         } ?: throw IllegalStateException("No script instance available. Call eval() first.")
         val func = instance::class.functions.find { it.name == functionName }
             ?: throw NoSuchMethodException("Function $functionName not found")
-        return func.call(instance, state)
-//        if (func.isSuspend) {
-//            func.callSuspend(instance, state)
-//        } else {
-//            func.call(instance, state)
-//        }
+        return if (func.isSuspend) {
+            func.callSuspend(instance, state)
+        } else {
+            func.call(instance, state)
+        }
     }.onFailure { e ->
         e.printStackTrace()
-    }
-
-    companion object {
-        @Composable
-        fun rememberScriptEngineHolder(
-            script: String?
-        ): ScriptEngineHolder = remember(script) {
-            ScriptEngineHolder(script)
-        }
     }
 }

@@ -6,10 +6,9 @@ import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
-import com.intellij.platform.ide.progress.ModalTaskOwner
-import com.intellij.platform.ide.progress.ModalTaskOwner.project
 import com.intellij.ui.content.ContentFactory
 import org.mjdev.plugins.projectplugin.modules.ModulesManager
+import org.mjdev.plugins.projectplugin.theme.AppTheme
 
 class MyToolWindowFactory(
 ) : ToolWindowFactory {

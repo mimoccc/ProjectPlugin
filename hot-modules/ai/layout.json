@@ -1,0 +1,20 @@
+{
+  "type": "Column",
+  "padding": 16,
+  "children": [
+    {
+      "type": "Text",
+      "text": "AI"
+    },
+    {
+      "type": "TextField",
+      "id": "input",
+      "label": "text field"
+    },
+    {
+      "type": "Button",
+      "text": "button",
+      "onClick": "onRun"
+    }
+  ]
+}

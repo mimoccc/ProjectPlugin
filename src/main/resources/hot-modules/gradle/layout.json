@@ -4,11 +4,7 @@
   "children": [
     {
       "type": "Text",
-      "text": "Welcome"
-    },
-    {
-      "type": "Text",
-      "texy": "Welcome text here"
+      "text": "Tasks"
     }
   ]
 }

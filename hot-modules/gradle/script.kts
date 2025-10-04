@@ -1,4 +1,4 @@
-class Welcome {
+class Tasks {
     fun onRun(
         context: Map<String, Any?>
     ): Any? {
@@ -6,4 +6,4 @@ class Welcome {
         return "Got text: $value"
     }
 }
-Welcome()
+Tasks()

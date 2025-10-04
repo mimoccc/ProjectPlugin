@@ -1,17 +1,41 @@
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import kotlin.reflect.KProperty
 
 plugins {
-    id("java")
     alias(libs.plugins.kotlin)
     alias(libs.plugins.intelliJPlatform)
     alias(libs.plugins.changelog)
     alias(libs.plugins.qodana)
     alias(libs.plugins.kover)
-    id("org.jetbrains.kotlin.plugin.compose") version libs.versions.kotlin.get()
+    alias(libs.plugins.compose)
 }
 
-group = providers.gradleProperty("pluginGroup").get()
-version = providers.gradleProperty("pluginVersion").get()
+class GradlePropertiesDelegate(
+    private val providers: ProviderFactory
+) {
+    operator fun getValue(
+        thisRef: Any?,
+        property: KProperty<*>
+    ): String = providers.gradleProperty(property.name).get()
+}
+
+val ProviderFactory.allGradleProperties: GradlePropertiesDelegate
+    get() = GradlePropertiesDelegate(this)
+
+val gradleProperties = providers.allGradleProperties
+
+val pluginGroup by gradleProperties
+val pluginVersion by gradleProperties
+val pluginSinceBuild by gradleProperties
+val pluginUntilBuild by gradleProperties
+val platformType by gradleProperties
+val platformVersion by gradleProperties
+val platformBundledPlugins by gradleProperties
+val platformPlugins by gradleProperties
+val platformBundledModules by gradleProperties
+
+group = pluginGroup
+version = pluginVersion
 
 kotlin {
     jvmToolchain(21)
@@ -28,29 +52,11 @@ repositories {
 }
 
 dependencies {
-    testImplementation(libs.junit)
-    testImplementation(libs.opentest4j)
     intellijPlatform {
-        create(
-            providers.gradleProperty("platformType"),
-            providers.gradleProperty("platformVersion")
-        )
-        bundledPlugins(
-            providers.gradleProperty(
-                "platformBundledPlugins"
-            ).map {
-                it.split(',')
-            })
-        plugins(
-            providers.gradleProperty("platformPlugins").map {
-                it.split(',')
-            }
-        )
-        bundledModules(
-            providers.gradleProperty("platformBundledModules").map {
-                it.split(',')
-            }
-        )
+        create(platformType, platformVersion)
+        bundledPlugins(platformBundledPlugins.split(','))
+        plugins(platformPlugins.split(','))
+        bundledModules(platformBundledModules.split(','))
         testFramework(TestFrameworkType.Platform)
     }
     // compose
@@ -73,4 +79,24 @@ dependencies {
     runtimeOnly("org.jetbrains.skiko:skiko-awt:0.9.4")
     runtimeOnly("org.jetbrains.skiko:skiko-awt-runtime-windows-x64:0.9.4")
     runtimeOnly("org.jetbrains.skiko:skiko-awt-runtime-linux-x64:0.9.4")
+    // classes scan
+    implementation("io.github.classgraph:classgraph:4.8.180")
+    // tests
+    testImplementation(libs.junit)
+    testImplementation(libs.opentest4j)
+}
+
+intellijPlatform {
+    pluginVerification {
+        ides {
+            recommended()
+        }
+    }
+}
+
+tasks {
+    patchPluginXml {
+        sinceBuild = pluginSinceBuild
+        untilBuild = pluginUntilBuild
+    }
 }
