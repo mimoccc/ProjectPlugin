@@ -4,11 +4,11 @@
   "children": [
     {
       "type": "Label",
-      "text": "Welcome"
+      "text": "Author"
     },
     {
-      "type": "MarkDownViewView",
-      "file": "welcome.md"
+      "type": "WebView",
+      "url": "https://github.com/mimoccc"
     }
   ]
 }

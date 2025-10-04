@@ -3,12 +3,12 @@
   "padding": 16,
   "children": [
     {
-      "type": "Text",
+      "type": "Label",
       "text": "Welcome"
     },
     {
-      "type": "Text",
-      "texy": "Welcome text here"
+      "type": "MarkDownViewView",
+      "file": "welcome.md"
     }
   ]
 }

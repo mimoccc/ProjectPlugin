@@ -87,6 +87,14 @@ dependencies {
     runtimeOnly("org.jetbrains.skiko:skiko-awt-runtime-linux-x64:0.9.4")
     // classes scan
     implementation("io.github.classgraph:classgraph:4.8.180")
+    // pdf
+    implementation("dev.zt64:compose-pdf:1.2.0")
+    // markdown
+    implementation("com.mikepenz:multiplatform-markdown-renderer:0.29.0")
+    implementation("com.mikepenz:multiplatform-markdown-renderer-m2:0.29.0")
+//    implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.29.0")
+    // adb
+    implementation("dev.mobile:dadb:1.2.10")
     // tests
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)

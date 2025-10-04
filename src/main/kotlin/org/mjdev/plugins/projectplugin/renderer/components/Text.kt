@@ -10,9 +10,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import org.mjdev.plugins.projectplugin.modules.HotModule
 
 @Composable
 fun Text(
+    module: HotModule,
     node: JSONObject,
     state: MutableMap<String, Any?>,
     onAction: (id: String, action: String, state: Map<String, Any?>) -> Unit,

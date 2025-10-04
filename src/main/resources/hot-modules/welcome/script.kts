@@ -1,3 +1,5 @@
+package `hot-modules`.welcome
+
 class Welcome {
     fun onRun(
         context: Map<String, Any?>

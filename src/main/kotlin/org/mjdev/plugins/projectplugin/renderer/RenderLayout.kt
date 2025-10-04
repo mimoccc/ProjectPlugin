@@ -7,16 +7,17 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import org.json.JSONObject
+import org.mjdev.plugins.projectplugin.modules.HotModule
 
 @Composable
 fun RenderLayout(
-    json: JSONObject,
+    module: HotModule,
     onAction: (id: String, action: String, state: Map<String, Any?>) -> Unit
 ) {
     val state = remember { mutableStateMapOf<String, Any?>() }
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        ComposeNode(json, state, onAction)
+        ComposeNode( module, module.layout, state, onAction)
     }
 }

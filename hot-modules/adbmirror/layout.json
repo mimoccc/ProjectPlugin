@@ -4,11 +4,10 @@
   "children": [
     {
       "type": "Label",
-      "text": "Welcome"
+      "text": "Devices"
     },
     {
-      "type": "MarkDownViewView",
-      "file": "welcome.md"
+      "type": "AdbScreenMirror"
     }
   ]
 }

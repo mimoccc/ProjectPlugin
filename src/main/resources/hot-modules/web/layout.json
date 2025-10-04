@@ -4,11 +4,11 @@
   "children": [
     {
       "type": "Label",
-      "text": "Welcome"
+      "text": "Perplexity"
     },
     {
-      "type": "MarkDownViewView",
-      "file": "welcome.md"
+      "type": "WebView",
+      "url": "https://www.perplexity.ai/"
     }
   ]
 }

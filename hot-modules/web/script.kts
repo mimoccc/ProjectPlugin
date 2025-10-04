@@ -1,6 +1,6 @@
-package `hot-modules`.tools
+package `hot-modules`.web
 
-class Tools {
+class Welcome {
     fun onRun(
         context: Map<String, Any?>
     ): Any? {
@@ -8,4 +8,4 @@ class Tools {
         return "Got text: $value"
     }
 }
-Tools()
+Welcome()

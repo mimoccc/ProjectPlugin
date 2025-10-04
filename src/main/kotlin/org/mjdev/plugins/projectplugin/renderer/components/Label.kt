@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider as DividerCompose
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import org.mjdev.plugins.projectplugin.modules.HotModule
 import androidx.compose.material.Text as TextCompose
 import androidx.compose.foundation.layout.Column as ColumnCompose
 
 @Preview
 @Composable
 fun Label(
+    module: HotModule,
     node: JSONObject,
     state: MutableMap<String, Any?>,
     onAction: (id: String, action: String, state: Map<String, Any?>) -> Unit,

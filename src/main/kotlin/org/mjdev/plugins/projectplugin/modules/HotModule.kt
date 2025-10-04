@@ -5,6 +5,7 @@ import org.mjdev.plugins.projectplugin.engines.ScriptEngineHolder
 import kotlin.script.experimental.api.ResultWithDiagnostics
 
 data class HotModule(
+    val moduleDirPath : String,
     val manifestData: FileData,
     val layoutData: FileData,
     val scriptData: FileData,

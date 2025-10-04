@@ -61,7 +61,7 @@ fun MyToolWindowContent(
                 }
             }
             RenderLayout(
-                json = currentModule.layout
+                module = currentModule
             ) { id, action, state ->
                 CoroutineScope(Dispatchers.Default).launch {
                     if (action.isNotBlank()) {

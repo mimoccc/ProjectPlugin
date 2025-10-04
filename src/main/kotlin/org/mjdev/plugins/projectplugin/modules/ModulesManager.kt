@@ -96,6 +96,7 @@ class ModulesManager(
     fun load(
         moduleName: String
     ) = HotModule(
+        moduleDirPath = "$projectRootDir/$baseDir/$moduleName/",
         manifestData = getFileData(
             projectRootDir,
             baseDir,

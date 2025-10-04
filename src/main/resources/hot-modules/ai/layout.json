@@ -3,18 +3,18 @@
   "padding": 16,
   "children": [
     {
-      "type": "Text",
+      "type": "Label",
       "text": "AI"
     },
     {
       "type": "TextField",
       "id": "input",
-      "label": "text field"
+      "label": "write request here"
     },
     {
       "type": "Button",
-      "text": "button",
-      "onClick": "onRun"
+      "text": ">>",
+      "onClick": "onSend"
     }
   ]
 }

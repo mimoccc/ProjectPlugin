@@ -1,3 +1,5 @@
+package `hot-modules`.ai
+
 class AI {
     fun onRun(
         context: Map<String, Any?>
