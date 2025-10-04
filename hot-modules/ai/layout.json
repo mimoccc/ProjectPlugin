@@ -9,12 +9,12 @@
     {
       "type": "TextField",
       "id": "input",
-      "label": "text field"
+      "label": "write request here"
     },
     {
       "type": "Button",
-      "text": "button",
-      "onClick": "onRun"
+      "text": ">>",
+      "onClick": "onSend"
     }
   ]
 }

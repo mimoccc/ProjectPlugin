@@ -5,22 +5,22 @@ import org.mjdev.plugins.projectplugin.engines.ScriptEngineHolder
 import kotlin.script.experimental.api.ResultWithDiagnostics
 
 data class HotModule(
-    val manifestData: String? ,
-    val layoutData: String?,
-    val scriptData: String?,
+    val manifestData: FileData,
+    val layoutData: FileData,
+    val scriptData: FileData,
 ) {
-    val manifest: JSONObject = manifestData?.let { JSONObject(it) } ?: JSONObject()
-    val layout: JSONObject = layoutData?.let { JSONObject(it) } ?: JSONObject()
+    val manifest: JSONObject = manifestData.toString().let { JSONObject(it) }
+    val layout: JSONObject = layoutData.toString().let { JSONObject(it) }
 
     val name: String = manifest.optString("name")?.takeIf { it.isNotEmpty() } ?: "-"
     val version: String = manifest.optString("version")?.takeIf { it.isNotEmpty() } ?: "-"
     val index: Int = manifest.optString("index")?.takeIf { it.isNotEmpty() }?.toInt() ?: -1
 
-    private val scriptEngine = ScriptEngineHolder(scriptData)
+    private val scriptEngine = ScriptEngineHolder(scriptData.toString())
 
     suspend fun init() {
         runCatching {
-            scriptEngine.eval(scriptData)
+            scriptEngine.eval(scriptData.toString())
         }.onSuccess { evalRes ->
             when (evalRes) {
                 is ResultWithDiagnostics.Success -> {

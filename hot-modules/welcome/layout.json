@@ -8,7 +8,7 @@
     },
     {
       "type": "Text",
-      "texy": "Welcome text here"
+      "text": "Welcome user"
     }
   ]
 }

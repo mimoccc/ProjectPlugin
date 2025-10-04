@@ -12,6 +12,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineScope
@@ -24,47 +26,47 @@ import org.mjdev.plugins.projectplugin.renderer.RenderLayout
 fun MyToolWindowContent(
     project: Project,
 ) {
-    val modulesLoader = remember(project) {
-        ModulesManager(project)
+    val modulesManager by remember(project) {
+        mutableStateOf(ModulesManager(project))
     }
-    val currentModuleIdx = remember(project) {
+    var currentModuleIdx by remember(project) {
         mutableStateOf(0)
     }
-    val currentModule = remember(project) {
+    val currentModule by remember(modulesManager.modulesState) {
         derivedStateOf {
-            modulesLoader.modules[currentModuleIdx.value]
+            modulesManager.modulesState[currentModuleIdx]
         }
     }
-
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        val module = currentModule.value
-        LaunchedEffect(module) {
-            module.init()
+        LaunchedEffect(currentModule) {
+            currentModule.init()
         }
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
             TabRow(
                 modifier = Modifier.fillMaxWidth(),
-                selectedTabIndex = currentModuleIdx.value
+                selectedTabIndex = currentModuleIdx
             ) {
-                modulesLoader.modules.forEachIndexed { index, module ->
+                modulesManager.modulesState.forEachIndexed { index, module ->
                     Tab(
-                        text = { Text(module.name) },
-                        selected = currentModuleIdx.value == index,
-                        onClick = { currentModuleIdx.value = index }
+                        text = {
+                            Text(module.name)
+                        },
+                        selected = currentModuleIdx == index,
+                        onClick = { currentModuleIdx = index }
                     )
                 }
             }
             RenderLayout(
-                json = module.layout
+                json = currentModule.layout
             ) { id, action, state ->
                 CoroutineScope(Dispatchers.Default).launch {
                     if (action.isNotBlank()) {
                         val res = runCatching {
-                            module.invoke(action, state)
+                            currentModule.invoke(action, state)
                         }.getOrNull()
                         when (res) {
                             null -> {

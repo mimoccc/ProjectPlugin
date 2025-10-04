@@ -25,6 +25,11 @@ val ProviderFactory.allGradleProperties: GradlePropertiesDelegate
 val gradleProperties = providers.allGradleProperties
 
 val pluginGroup by gradleProperties
+val pluginVendor by gradleProperties
+val pluginVendorName by gradleProperties
+val pluginVendorUrl by gradleProperties
+val pluginVendorEmail by gradleProperties
+val pluginVendorId by gradleProperties
 val pluginVersion by gradleProperties
 val pluginSinceBuild by gradleProperties
 val pluginUntilBuild by gradleProperties
@@ -33,6 +38,7 @@ val platformVersion by gradleProperties
 val platformBundledPlugins by gradleProperties
 val platformPlugins by gradleProperties
 val platformBundledModules by gradleProperties
+
 
 group = pluginGroup
 version = pluginVersion
@@ -96,7 +102,12 @@ intellijPlatform {
 
 tasks {
     patchPluginXml {
+        pluginId = pluginVendorId
+        pluginName = pluginVendorName
         sinceBuild = pluginSinceBuild
         untilBuild = pluginUntilBuild
+        vendorName = pluginVendor
+        vendorUrl = pluginVendorUrl
+        vendorEmail = pluginVendorEmail
     }
 }
