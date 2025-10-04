@@ -1,0 +1,11 @@
+<idea-plugin>
+    <id>org.mjdev.plugins.projectplugin</id>
+    <name>Project Tools</name>
+    <vendor>JetBrains</vendor>
+    <depends>com.intellij.modules.platform</depends>
+    <resource-bundle>messages.MyBundle</resource-bundle>
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow factoryClass="org.mjdev.plugins.projectplugin.toolWindow.MyToolWindowFactory"
+                id="Project Plugin" anchor="right" icon="icons/myTool.svg" />
+    </extensions>
+</idea-plugin>

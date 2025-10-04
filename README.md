@@ -1,2 +1,2 @@
 # ProjectPlugin
-an project helper hotswapable plugin
+an project helper hot-swappable plugin
