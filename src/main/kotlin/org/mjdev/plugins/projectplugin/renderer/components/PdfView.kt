@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
@@ -16,6 +15,7 @@ import dev.zt64.compose.pdf.component.PdfPage
 import dev.zt64.compose.pdf.rememberLocalPdfState
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import org.mjdev.plugins.projectplugin.extensions.CoroutineExt.rememberCoroutineScope
 import org.mjdev.plugins.projectplugin.modules.HotModule
 import java.io.File
 import java.nio.file.Paths

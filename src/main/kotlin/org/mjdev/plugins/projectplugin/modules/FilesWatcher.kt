@@ -1,8 +1,9 @@
 package org.mjdev.plugins.projectplugin.modules
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
 import java.nio.file.*
 import java.nio.file.attribute.BasicFileAttributes
+import org.mjdev.plugins.projectplugin.extensions.CoroutineExt.launch
 
 class FilesWatcher(
     private val dirToWatch: String,
@@ -13,16 +14,14 @@ class FilesWatcher(
     private val dir by lazy { Paths.get(dirToWatch) }
     private val keys = mutableMapOf<WatchKey, Path>()
 
-    private var scope: CoroutineScope? = null
     private var job: Job? = null
 
     fun start() {
         watcher = FileSystems.getDefault().newWatchService()
-        scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
         registerAll(dir)
-        job = scope?.launch {
+        job = launch {
             try {
-                while (isActive) {
+                while (job?.isActive == true) {
                     val currentWatcher = watcher ?: break
                     val key = try {
                         currentWatcher.take()
@@ -80,7 +79,6 @@ class FilesWatcher(
 
     fun stop() {
         job?.cancel()
-        scope?.cancel()
         keys.keys.forEach { it.cancel() }
         keys.clear()
         watcher?.close()

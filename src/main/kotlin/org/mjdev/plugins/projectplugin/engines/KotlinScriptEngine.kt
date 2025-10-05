@@ -1,9 +1,7 @@
 package org.mjdev.plugins.projectplugin.engines
 
 import com.intellij.openapi.application.PathManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import org.mjdev.plugins.projectplugin.extensions.CoroutineExt.async
 import kotlin.script.experimental.api.ScriptEvaluationConfiguration
 import kotlin.script.experimental.host.StringScriptSource
 import kotlin.script.experimental.jvm.dependenciesFromClassContext
@@ -32,9 +30,7 @@ class KotlinScriptEngine : IScriptEngine {
 
     override suspend fun eval(
         script: String
-    ) = CoroutineScope(
-        Dispatchers.Default
-    ).async {
+    ) = async {
         scriptingHost.eval(
             script.toScriptSource(),
             compilationConfiguration,

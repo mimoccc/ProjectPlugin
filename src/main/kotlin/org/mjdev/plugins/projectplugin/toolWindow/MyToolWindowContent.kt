@@ -16,9 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.intellij.openapi.project.Project
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import org.mjdev.plugins.projectplugin.extensions.CoroutineExt.launch
 import org.mjdev.plugins.projectplugin.modules.ModulesManager
 import org.mjdev.plugins.projectplugin.renderer.RenderLayout
 
@@ -46,6 +44,7 @@ fun MyToolWindowContent(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
+            @Suppress("COMPOSE_APPLIER_CALL_MISMATCH")
             TabRow(
                 modifier = Modifier.fillMaxWidth(),
                 selectedTabIndex = currentModuleIdx
@@ -63,7 +62,7 @@ fun MyToolWindowContent(
             RenderLayout(
                 module = currentModule
             ) { id, action, state ->
-                CoroutineScope(Dispatchers.Default).launch {
+                launch {
                     if (action.isNotBlank()) {
                         val res = runCatching {
                             currentModule.invoke(action, state)
