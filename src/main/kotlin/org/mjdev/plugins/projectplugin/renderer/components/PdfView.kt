@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import dev.zt64.compose.pdf.component.PdfPage
 import dev.zt64.compose.pdf.rememberLocalPdfState
 import kotlinx.coroutines.launch
+import org.codehaus.plexus.util.StringInputStream
 import org.json.JSONObject
 import org.mjdev.plugins.projectplugin.extensions.CoroutineExt.rememberCoroutineScope
 import org.mjdev.plugins.projectplugin.modules.HotModule
@@ -30,13 +31,12 @@ fun PdfView(
     state: MutableMap<String, Any?>,
     onAction: (id: String, action: String, state: Map<String, Any?>) -> Unit,
 ) {
-    val pdfFile : File? = runCatching {
-        val modulePath = Paths.get(module.moduleDirPath)
-        val fileName = node.optString("file")
-        File(modulePath.resolve(fileName).absolutePathString())
+    val pdfFile = node.optString("file")
+    val pdfFileData: String? = runCatching {
+        module.getFileData(pdfFile)
     }.getOrNull()
-    if (pdfFile?.exists() == true) {
-        val pdfState = rememberLocalPdfState(pdfFile)
+    if (pdfFile != null) {
+        val pdfState = rememberLocalPdfState(StringInputStream(pdfFile))
         val scrollState = rememberScrollState()
         val coroutineScope = rememberCoroutineScope()
         ComposeColumn(
@@ -63,7 +63,7 @@ fun PdfView(
         }
     } else {
         ComposeText(
-            text = "PDF soubor nenalezen: ${pdfFile?.absolutePath}"
+            text = "PDF file not found: $pdfFile"
         )
     }
 }

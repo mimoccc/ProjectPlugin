@@ -16,9 +16,6 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.mjdev.plugins.projectplugin.extensions.CoroutineExt.rememberCoroutineScope
 import org.mjdev.plugins.projectplugin.modules.HotModule
-import java.io.File
-import java.nio.file.Paths
-import kotlin.io.path.absolutePathString
 import androidx.compose.material.Text as ComposeText
 import androidx.compose.foundation.layout.Column as ComposeColumn
 
@@ -29,13 +26,12 @@ fun MarkDownViewView(
     state: MutableMap<String, Any?>,
     onAction: (id: String, action: String, state: Map<String, Any?>) -> Unit,
 ) {
-    val mdFile: File? = runCatching {
-        val modulePath = Paths.get(module.moduleDirPath)
-        val fileName = node.optString("file")
-        File(modulePath.resolve(fileName).absolutePathString())
+    val mdFile = node.optString("file")
+    val mdFileData: String? = runCatching {
+        module.getFileData(mdFile)
     }.getOrNull()
-    if (mdFile?.exists() == true) {
-        val markdownState = mutableStateOf(mdFile.readText())
+    if (mdFileData != null) {
+        val markdownState = mutableStateOf(mdFileData)
         val scrollState = rememberScrollState()
         val coroutineScope = rememberCoroutineScope()
         ComposeColumn(
@@ -58,7 +54,7 @@ fun MarkDownViewView(
         }
     } else {
         ComposeText(
-            text = "PDF file not found: ${mdFile?.absolutePath}"
+            text = "MarkDown file not found: $mdFile"
         )
     }
 }

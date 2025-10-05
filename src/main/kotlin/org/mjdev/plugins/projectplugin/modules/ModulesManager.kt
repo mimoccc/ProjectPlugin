@@ -24,17 +24,20 @@ class ModulesManager(
 
     var modulesState = mutableStateListOf<HotModule>()
 
-    private val modulesWatcher = FilesWatcher("$projectRootDir/$baseDir") {
-        // todo better performance
-        reload()
-    }
+    private var modulesWatcher: FilesWatcher? = null
 
     init {
+        if (projectHasModules) {
+            modulesWatcher = FilesWatcher("$projectRootDir/$baseDir") {
+                // todo better performance
+                reload()
+            }
+        }
         loadModules()
     }
 
     private fun reload() {
-        modulesWatcher.stop()
+        modulesWatcher?.stop()
         loadModules()
     }
 
@@ -78,9 +81,10 @@ class ModulesManager(
             modulesState.clear()
             modulesState.addAll(modules)
         }
-        modulesWatcher.start()
+        modulesWatcher?.start()
     }
 
+    @Suppress("SameParameterValue")
     private fun getFileData(
         filesDir: Path,
         baseDir: String,
@@ -118,9 +122,6 @@ class ModulesManager(
     )
 
     companion object {
-        fun isAvailable(project: Project): Boolean {
-            val path: Path = Paths.get(project.basePath ?: "")
-            return Files.exists(path)
-        }
+        fun isAvailable(project: Project): Boolean = true
     }
 }

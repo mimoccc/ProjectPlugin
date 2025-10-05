@@ -17,6 +17,7 @@ class FilesWatcher(
     private var job: Job? = null
 
     fun start() {
+        if (!Files.exists(dir)) return
         watcher = FileSystems.getDefault().newWatchService()
         registerAll(dir)
         job = launch {

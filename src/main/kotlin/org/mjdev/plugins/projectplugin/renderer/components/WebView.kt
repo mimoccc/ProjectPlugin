@@ -27,13 +27,12 @@ fun WebView(
         ComposeText("JCEF not supported in this IDE")
         return
     }
-    val htmlFile: File? = runCatching {
-        val modulePath = Paths.get(module.moduleDirPath)
-        val fileName = node.optString("file")
-        File(modulePath.resolve(fileName).absolutePathString())
-    }.getOrNull()
+    val htmlFile = node.optString("file")
     val url = node.optString("url", "")
-    if (htmlFile?.exists() == true || url.isNotEmpty()) {
+    val htmlFileData: String? = runCatching {
+        module.getFileData(htmlFile)
+    }.getOrNull()
+    if (htmlFileData != null || url.isNotEmpty()) {
         val lifecycleOwner = LocalLifecycleOwner.current
         var isVisible by remember { mutableStateOf(true) }
         DisposableEffect(lifecycleOwner) {
@@ -41,8 +40,10 @@ fun WebView(
                 isVisible = when (event) {
                     Lifecycle.Event.ON_START,
                     Lifecycle.Event.ON_RESUME -> true
+
                     Lifecycle.Event.ON_STOP,
                     Lifecycle.Event.ON_PAUSE -> false
+
                     else -> isVisible
                 }
             }
@@ -55,12 +56,11 @@ fun WebView(
             val browser = remember {
                 JBCefBrowser()
             }
-            DisposableEffect(htmlFile, url) {
+            DisposableEffect(htmlFileData, url) {
                 when {
                     url.isNotEmpty() -> browser.loadURL(url)
-                    htmlFile != null -> {
-                        val content = htmlFile.readText()
-                        browser.loadHTML(content)
+                    htmlFileData != null -> {
+                        browser.loadHTML(htmlFileData)
                     }
                 }
                 onDispose {
@@ -74,7 +74,7 @@ fun WebView(
         }
     } else {
         ComposeText(
-            text = "WebView source not found: ${htmlFile?.absolutePath ?: url}"
+            text = "WebView source not found: ${htmlFile ?: url}"
         )
     }
 }

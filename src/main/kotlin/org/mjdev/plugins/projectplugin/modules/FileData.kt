@@ -13,8 +13,11 @@ class FileData(
     val moduleName: String,
     val fileName: String,
 ) {
-    val resourcePath = "$baseDir/$moduleName/$fileName"
-    val filePath = "$filesDir/$baseDir/$moduleName/$fileName"
+    val resourceBaseDir = "$baseDir/$moduleName"
+    val resourcePath = "$resourceBaseDir/$fileName"
+
+    val fileBaseDir =  "$filesDir/$baseDir/$moduleName"
+    val filePath = "$fileBaseDir/$fileName"
 
     val dataRes: String? = readResource(resourcePath)
     val dataFile: String? = readFile(filePath)
@@ -32,11 +35,11 @@ class FileData(
     companion object {
         fun readFile(
             filePath: String,
-        ) = runCatching {
+        ): String? = runCatching {
             Files.readString(Paths.get(filePath))
         }.getOrNull()
 
-        private fun readResource(
+        fun readResource(
             resourcePath: String,
         ): String? = runCatching {
             val classLoader = ModulesManager::class.java.classLoader
