@@ -24,11 +24,13 @@ fun WebView(
         ComposeText("JCEF not supported in this IDE")
         return
     }
-    val htmlFile = node.optString("file")
-    val url = node.optString("url", "")
-    val htmlFileData: String? = runCatching {
-        module.getFileData(htmlFile)
-    }.getOrNull()
+    val htmlFile = remember(node) { node.optString("file") }
+    val url = remember(node) { node.optString("url", "") }
+    val htmlFileData: String? = remember(htmlFile) {
+        runCatching {
+            module.getFileData(htmlFile)
+        }.getOrNull()
+    }
     if (htmlFileData != null || url.isNotEmpty()) {
         val lifecycleOwner = LocalLifecycleOwner.current
         var isVisible by remember { mutableStateOf(true) }

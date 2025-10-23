@@ -23,11 +23,9 @@ fun Columh(
     ComposeColumn(
         modifier = Modifier.padding(padding)
     ) {
-        if (children != null) {
-            for (i in 0 until children.length()) {
-                val child = children.getJSONObject(i)
-                ComposeNode(module, child, state, onAction)
-            }
+        for (i in 0 until children.length()) {
+            val child = children.getJSONObject(i)
+            ComposeNode(module, child, state, onAction)
         }
     }
 }

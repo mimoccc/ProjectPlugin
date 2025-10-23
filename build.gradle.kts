@@ -92,7 +92,7 @@ dependencies {
     // markdown
     implementation("com.mikepenz:multiplatform-markdown-renderer:0.29.0")
     implementation("com.mikepenz:multiplatform-markdown-renderer-m2:0.29.0")
-//    implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.29.0")
+    implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.29.0")
     // adb
     implementation("dev.mobile:dadb:1.2.10")
     // tests
