@@ -1,17 +1,20 @@
 package org.mjdev.plugins.projectplugin.ui.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import com.intellij.ui.jcef.JBCefApp
-import com.intellij.ui.jcef.JBCefBrowser
+import javafx.application.Platform
+import javafx.embed.swing.JFXPanel
+import javafx.scene.Scene
+import javafx.scene.web.WebView as JFXWebView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import org.mjdev.plugins.projectplugin.modules.HotModule
 import androidx.compose.material.Text as ComposeText
+import kotlin.concurrent.thread
 
 @Composable
 fun WebView(
@@ -20,60 +23,57 @@ fun WebView(
     state: MutableMap<String, Any?>,
     onAction: (id: String, action: String, state: Map<String, Any?>) -> Unit,
 ) {
-    if (!JBCefApp.isSupported()) {
-        ComposeText("JCEF not supported in this IDE")
-        return
-    }
     val htmlFile = node.optString("file")
     val url = node.optString("url", "")
     val htmlFileData: String? = runCatching {
         module.getFileData(htmlFile)
     }.getOrNull()
+
     if (htmlFileData != null || url.isNotEmpty()) {
-        val lifecycleOwner = LocalLifecycleOwner.current
-        var isVisible by remember { mutableStateOf(true) }
-        DisposableEffect(lifecycleOwner) {
-            val observer = LifecycleEventObserver { _, event ->
-                isVisible = when (event) {
-                    Lifecycle.Event.ON_START,
-                    Lifecycle.Event.ON_RESUME -> true
+        var jfxPanel by remember { mutableStateOf<JFXPanel?>(null) }
 
-                    Lifecycle.Event.ON_STOP,
-                    Lifecycle.Event.ON_PAUSE -> false
+        LaunchedEffect(Unit) {
+            withContext(Dispatchers.IO) {
+                val panel = JFXPanel() // Init JavaFX toolkit
 
-                    else -> isVisible
-                }
-            }
-            lifecycleOwner.lifecycle.addObserver(observer)
-            onDispose {
-                lifecycleOwner.lifecycle.removeObserver(observer)
-            }
-        }
-        if (isVisible) {
-            val browser = remember {
-                JBCefBrowser().apply {
-                    // todo enable javascript
-                }
-            }
-            DisposableEffect(htmlFileData, url) {
-                when {
-                    url.isNotEmpty() -> browser.loadURL(url)
-                    htmlFileData != null -> {
-                        browser.loadHTML(htmlFileData)
+                thread {
+                    Thread.sleep(100) // Počkej na JavaFX startup
+                    Platform.runLater {
+                        val webView = JFXWebView()
+                        webView.engine.isJavaScriptEnabled = true
+
+                        when {
+                            url.isNotEmpty() -> webView.engine.load(url)
+                            htmlFileData != null -> webView.engine.loadContent(htmlFileData)
+                        }
+
+                        panel.scene = Scene(webView)
                     }
                 }
-                onDispose {
-                    browser.dispose()
+
+                jfxPanel = panel
+            }
+        }
+
+        DisposableEffect(Unit) {
+            onDispose {
+                jfxPanel?.let {
+                    Platform.runLater {
+                        it.scene = null
+                    }
                 }
             }
-            SwingPanel(
-                factory = { browser.component },
-                modifier = Modifier.fillMaxSize()
-            )
+        }
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            jfxPanel?.let { panel ->
+                SwingPanel(
+                    factory = { panel },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     } else {
-        ComposeText(
-            text = "WebView source not found: ${htmlFile ?: url}"
-        )
+        ComposeText(text = "WebView source not found: ${htmlFile ?: url}")
     }
 }

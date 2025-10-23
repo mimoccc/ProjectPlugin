@@ -8,14 +8,14 @@ plugins {
     alias(libs.plugins.qodana)
     alias(libs.plugins.kover)
     alias(libs.plugins.compose)
+    alias(libs.plugins.javafx)
 }
 
 class GradlePropertiesDelegate(
     private val providers: ProviderFactory
 ) {
     operator fun getValue(
-        thisRef: Any?,
-        property: KProperty<*>
+        thisRef: Any?, property: KProperty<*>
     ): String = providers.gradleProperty(property.name).get()
 }
 
@@ -39,9 +39,19 @@ val platformBundledPlugins by gradleProperties
 val platformPlugins by gradleProperties
 val platformBundledModules by gradleProperties
 
+val os = when {
+    System.getProperty("os.name").contains("Win") -> "win"
+    System.getProperty("os.name").contains("Mac") -> "mac"
+    else -> "linux"
+}
 
 group = pluginGroup
 version = pluginVersion
+
+javafx {
+    version = "21"
+    modules = listOf("javafx.web", "javafx.swing")
+}
 
 kotlin {
     jvmToolchain(21)
@@ -92,9 +102,18 @@ dependencies {
     // markdown
     implementation("com.mikepenz:multiplatform-markdown-renderer:0.29.0")
     implementation("com.mikepenz:multiplatform-markdown-renderer-m2:0.29.0")
-//    implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.29.0")
+    //implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.29.0")
     // adb
     implementation("dev.mobile:dadb:1.2.10")
+    // vnc
+    // implementation("com.tigervnc:tigervnc:1.13.1")
+    // www
+    implementation("org.openjfx:javafx-base:21:$os")
+    implementation("org.openjfx:javafx-controls:21:$os")
+    implementation("org.openjfx:javafx-graphics:21:$os")
+    implementation("org.openjfx:javafx-web:21:$os")
+    implementation("org.openjfx:javafx-swing:21:$os")
+    implementation("org.openjfx:javafx-media:21:$os")
     // tests
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
@@ -109,6 +128,13 @@ intellijPlatform {
 }
 
 tasks {
+    prepareSandbox {
+        from(configurations.runtimeClasspath) {
+            include("javafx-*.jar")
+            into("${intellijPlatform.projectName.get()}/lib")
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE // PŘIDEJ
+        }
+    }
     patchPluginXml {
         pluginId = pluginVendorId
         pluginName = pluginVendorName
