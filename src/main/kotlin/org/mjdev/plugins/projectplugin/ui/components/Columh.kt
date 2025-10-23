@@ -1,4 +1,4 @@
-package org.mjdev.plugins.projectplugin.renderer.components
+package org.mjdev.plugins.projectplugin.ui.components
 
 import androidx.compose.foundation.layout.Column as ComposeColumn
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import org.json.JSONArray
 import org.json.JSONObject
 import org.mjdev.plugins.projectplugin.modules.HotModule
-import org.mjdev.plugins.projectplugin.renderer.ComposeNode
+import org.mjdev.plugins.projectplugin.ui.ComposeNode
 
 @Composable
 fun Columh(

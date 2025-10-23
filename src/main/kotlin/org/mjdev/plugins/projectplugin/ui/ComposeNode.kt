@@ -1,18 +1,18 @@
-package org.mjdev.plugins.projectplugin.renderer
+package org.mjdev.plugins.projectplugin.ui
 
 import androidx.compose.runtime.Composable
 import org.json.JSONObject
 import org.mjdev.plugins.projectplugin.modules.HotModule
-import org.mjdev.plugins.projectplugin.renderer.components.Columh
-import org.mjdev.plugins.projectplugin.renderer.components.Text
-import org.mjdev.plugins.projectplugin.renderer.components.TextField
-import org.mjdev.plugins.projectplugin.renderer.components.Button
-import org.mjdev.plugins.projectplugin.renderer.components.Label
-import org.mjdev.plugins.projectplugin.renderer.components.MarkDownViewView
-import org.mjdev.plugins.projectplugin.renderer.components.NoComponent
-import org.mjdev.plugins.projectplugin.renderer.components.PdfView
-import org.mjdev.plugins.projectplugin.renderer.components.WebView
-import org.mjdev.plugins.projectplugin.renderer.components.AdbScreenMirror
+import org.mjdev.plugins.projectplugin.ui.components.Columh
+import org.mjdev.plugins.projectplugin.ui.components.Text
+import org.mjdev.plugins.projectplugin.ui.components.TextField
+import org.mjdev.plugins.projectplugin.ui.components.Button
+import org.mjdev.plugins.projectplugin.ui.components.Label
+import org.mjdev.plugins.projectplugin.ui.components.MarkDownViewView
+import org.mjdev.plugins.projectplugin.ui.components.NoComponent
+import org.mjdev.plugins.projectplugin.ui.components.PdfView
+import org.mjdev.plugins.projectplugin.ui.components.WebView
+import org.mjdev.plugins.projectplugin.ui.components.AdbScreenMirror
 
 @Composable
 fun ComposeNode(

@@ -1,4 +1,4 @@
-package org.mjdev.plugins.projectplugin.toolWindow
+package org.mjdev.plugins.projectplugin.ui.toolWindow
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.awt.ComposePanel
@@ -8,7 +8,7 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
 import org.mjdev.plugins.projectplugin.modules.ModulesManager
-import org.mjdev.plugins.projectplugin.theme.AppTheme
+import org.mjdev.plugins.projectplugin.ui.theme.AppTheme
 
 class MyToolWindowFactory(
 ) : ToolWindowFactory {

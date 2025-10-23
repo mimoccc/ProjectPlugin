@@ -5,7 +5,7 @@
     <depends>com.intellij.modules.platform</depends>
     <resource-bundle>messages.MyBundle</resource-bundle>
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="org.mjdev.plugins.projectplugin.toolWindow.MyToolWindowFactory"
+        <toolWindow factoryClass="org.mjdev.plugins.projectplugin.ui.toolWindow.MyToolWindowFactory"
                 id="Project Plugin" anchor="right" icon="icons/myTool.svg" />
     </extensions>
     <idea-version since-build="223" until-build="*" />

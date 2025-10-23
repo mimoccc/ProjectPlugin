@@ -1,4 +1,4 @@
-package org.mjdev.plugins.projectplugin.renderer.components
+package org.mjdev.plugins.projectplugin.ui.components
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
@@ -11,9 +11,6 @@ import com.intellij.ui.jcef.JBCefApp
 import com.intellij.ui.jcef.JBCefBrowser
 import org.json.JSONObject
 import org.mjdev.plugins.projectplugin.modules.HotModule
-import java.io.File
-import java.nio.file.Paths
-import kotlin.io.path.absolutePathString
 import androidx.compose.material.Text as ComposeText
 
 @Composable

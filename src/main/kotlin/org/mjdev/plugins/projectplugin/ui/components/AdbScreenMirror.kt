@@ -1,4 +1,4 @@
-package org.mjdev.plugins.projectplugin.renderer.components
+package org.mjdev.plugins.projectplugin.ui.components
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toComposeImageBitmap

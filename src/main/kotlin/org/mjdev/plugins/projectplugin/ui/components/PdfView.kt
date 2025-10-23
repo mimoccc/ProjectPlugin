@@ -1,4 +1,4 @@
-package org.mjdev.plugins.projectplugin.renderer.components
+package org.mjdev.plugins.projectplugin.ui.components
 
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.scrollBy
@@ -18,9 +18,6 @@ import org.codehaus.plexus.util.StringInputStream
 import org.json.JSONObject
 import org.mjdev.plugins.projectplugin.extensions.CoroutineExt.rememberCoroutineScope
 import org.mjdev.plugins.projectplugin.modules.HotModule
-import java.io.File
-import java.nio.file.Paths
-import kotlin.io.path.absolutePathString
 import androidx.compose.material.Text as ComposeText
 import androidx.compose.foundation.layout.Column as ComposeColumn
 

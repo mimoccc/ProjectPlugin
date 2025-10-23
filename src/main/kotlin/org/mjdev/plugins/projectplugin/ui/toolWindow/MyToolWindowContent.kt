@@ -1,4 +1,4 @@
-package org.mjdev.plugins.projectplugin.toolWindow
+package org.mjdev.plugins.projectplugin.ui.toolWindow
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import com.intellij.openapi.project.Project
 import org.mjdev.plugins.projectplugin.extensions.CoroutineExt.launch
 import org.mjdev.plugins.projectplugin.modules.ModulesManager
-import org.mjdev.plugins.projectplugin.renderer.RenderLayout
+import org.mjdev.plugins.projectplugin.ui.RenderLayout
 
 @Composable
 fun MyToolWindowContent(
