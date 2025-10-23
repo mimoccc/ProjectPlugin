@@ -54,7 +54,9 @@ fun WebView(
         }
         if (isVisible) {
             val browser = remember {
-                JBCefBrowser()
+                JBCefBrowser().apply {
+                    // todo enable javascript
+                }
             }
             DisposableEffect(htmlFileData, url) {
                 when {

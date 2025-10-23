@@ -1,0 +1,14 @@
+{
+  "type": "Column",
+  "padding": 16,
+  "children": [
+    {
+      "type": "Label",
+      "text": "Author"
+    },
+    {
+      "type": "WebView",
+      "url": "https://github.com/mimoccc"
+    }
+  ]
+}

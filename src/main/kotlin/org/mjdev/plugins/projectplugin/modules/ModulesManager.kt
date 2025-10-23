@@ -2,7 +2,6 @@ package org.mjdev.plugins.projectplugin.modules
 
 import androidx.compose.runtime.mutableStateListOf
 import com.intellij.openapi.project.Project
-import io.github.classgraph.ClassGraph
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -52,24 +51,24 @@ class ModulesManager(
     else null
 
     private fun listModulesInResources(): List<String> {
-        val modules = mutableSetOf<String>()
-        ClassGraph()
-            .acceptPaths(baseDir)
-            .scan()
-            .use { scanResult ->
-                scanResult.allResources.forEach { resource ->
-                    val path = resource.path
-                    if (path.startsWith("$baseDir/")) {
-                        val moduleName = path
-                            .removePrefix("$baseDir/")
-                            .substringBefore("/")
-                        if (moduleName.isNotEmpty()) {
-                            modules.add(moduleName)
-                        }
-                    }
-                }
+        val classLoader = javaClass.classLoader
+        val resourceUrl = classLoader.getResource("modules")
+            ?: return emptyList()
+        return when (resourceUrl.protocol) {
+            "jar" -> {
+                val connection = resourceUrl.openConnection() as java.net.JarURLConnection
+                connection.jarFile.entries().toList()
+                    .filter { it.name.startsWith("modules/") && !it.isDirectory }
+                    .map { it.name }
             }
-        return modules.toList()
+            "file" -> {
+                java.io.File(resourceUrl.toURI()).walk()
+                    .filter { it.isFile }
+                    .map { it.absolutePath }
+                    .toList()
+            }
+            else -> emptyList()
+        }
     }
 
     private fun loadModules() {
