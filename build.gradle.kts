@@ -39,7 +39,6 @@ val platformBundledPlugins by gradleProperties
 val platformPlugins by gradleProperties
 val platformBundledModules by gradleProperties
 
-
 group = pluginGroup
 version = pluginVersion
 
@@ -113,7 +112,7 @@ tasks {
         pluginId = pluginVendorId
         pluginName = pluginVendorName
         sinceBuild = pluginSinceBuild
-        untilBuild = pluginUntilBuild
+        untilBuild = provider { pluginUntilBuild.ifEmpty { null } }
         vendorName = pluginVendor
         vendorUrl = pluginVendorUrl
         vendorEmail = pluginVendorEmail

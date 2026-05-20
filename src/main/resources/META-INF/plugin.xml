@@ -8,5 +8,5 @@
         <toolWindow factoryClass="org.mjdev.plugins.projectplugin.ui.toolWindow.MyToolWindowFactory"
                 id="Project Plugin" anchor="right" icon="icons/myTool.svg" />
     </extensions>
-    <idea-version since-build="223" until-build="*" />
+    <idea-version since-build="233" />
 </idea-plugin>
